@@ -56,21 +56,21 @@
         $this->codiceFiscale = $codiceFiscale;
     }
     function getPersone(){
-        echo
-       ' <div>'
-       .'Nome:'.$this->getNome().
+        return
+       
+       'Nome:'.$this->getNome().
         'Cognome:'.$this->getCognome().
         'Data di Nascita'.$this->getDataDiNascita().
         'Luogo di Nascita'.$this->getLuogoDiNascita().
         'CF'.$this->getCodiceFiscale().
-       '</div>'
+       
     }
    
     }
     class Stipendio{
     private  $mensile;
-    private  $tredicesima;
-    private  $quattordicesima;
+    private  $tredicesima = false;
+    private  $quattordicesima = false;
 
     public function __construct($mensile,$tredicesima,$quattordicesima){
 
@@ -97,12 +97,23 @@
     function setQuattordicesima($quattordicesima){
         $this->quattordicesima = $quattordicesima;
     }
-    function getStipendio(){
-        echo'<div>'.'Stipendio Annuale:€'. ($this->getMensile()*12)+ $this->getTredicesima() + $this->getQuattordicesima().'</div>';
+    function getAnnuale(){
+        $importoTredicesima = 0;
+        $importoQuattordicesima = 0;
+
+        if($this->getTredicesima()==true){
+            $importoTredicesima = $this->getMensile();
+        }
+        if($this->getQuattordicesima()==true){
+            $importoQuattordicesima = $this->getMensile();
+        }
+        
+        return ($this->getMensile()*12)+ $importoTredicesima + $importoQuattordicesima;
     }
-    
+       
     }
-    $stipendio=new Stipendio(1500,750,750);
+   
+   
 
     class Impiegato extends Persone{
 
@@ -132,16 +143,21 @@
             $this->dataDiAssunzione = $dataDiAssunzione;
         }
 
+        function getRedditoAnnuale() {
+            return $this->getStipendio()->getAnnuale();
+        }
+
         function getHtml(){
-           echo '<div>'.$this->getPersone().$this->getStipendio().$this->getDataDiAssunzione().'</div>';
+           return $this->getPersone().'Stipendio Annuale:€'.$this->getStipendio().'Data di Assunzione:'.$this->getDataDiAssunzione();
         }
        
     }
 
-
-    $impiegato=new Impiegato('Mario','Rosi','17/10/1988','Roma','MRSSI17T101788501T',$stipendio,'22/05/2020');
-
-     $impiegato->getHtml();
+    $stipendio(400,true,false);
+    $impiegato=new Impiegato('Mario','Rossi','17/07/18','Roma','MRSSI1788501t',$stipendio,'18/05/2018');
+   
+    echo $impiegato->getHtml();
+   
     
     
 
