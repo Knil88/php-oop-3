@@ -56,13 +56,13 @@
         $this->codiceFiscale = $codiceFiscale;
     }
     function getPersone(){
-        return
-       
-       'Nome:'.$this->getNome().
-        'Cognome:'.$this->getCognome().
-        'Data di Nascita'.$this->getDataDiNascita().
-        'Luogo di Nascita'.$this->getLuogoDiNascita().
-        'CF'.$this->getCodiceFiscale().
+            return
+
+                'Nome:' . $this->getNome() .'<br>'.
+                'Cognome:' . $this->getCognome() .'<br>'.
+                'Data di Nascita:' . $this->getDataDiNascita() .'<br>'.
+                'Luogo di Nascita:' . $this->getLuogoDiNascita() .'<br>'.
+                'CF' . $this->getCodiceFiscale();
        
     }
    
@@ -148,18 +148,67 @@
         }
 
         function getHtml(){
-           return $this->getPersone().'Stipendio Annuale:€'.$this->getStipendio().'Data di Assunzione:'.$this->getDataDiAssunzione();
+           echo '<div>'.'<h4>Impiegato</h4>'. $this->getPersone().'<br>'.
+           'Stipendio Annuale:€
+           '.$this->getStipendio()->getAnnuale().'<br>'
+           .'Data di Assunzione:'
+           .$this->getDataDiAssunzione().'</div>';
         }
        
     }
 
-    $stipendio(400,true,false);
-    $impiegato=new Impiegato('Mario','Rossi','17/07/18','Roma','MRSSI1788501t',$stipendio,'18/05/2018');
+    $stipendio=new Stipendio(400,true,false);
+    $impiegato=new Impiegato('Mario','Rossi','17/07/18','Roma','MRSSI1788501T',$stipendio,'18/05/2018');
+    
    
-    echo $impiegato->getHtml();
+     $impiegato->getHtml();
+
+    
    
+    class Capo extends Persone{
+         
+        private $dividendo ;
+        private $bonus ;
+       
+        
+        public function __construct($nome,$cognome,$dataDiNascita,$luogoDiNascita,$codiceFiscale,$bonus,$dividendo){
+            $this->setDividendo($dividendo);
+            $this->setBonus($bonus);
+            parent::__construct($nome,$cognome,$dataDiNascita,$luogoDiNascita,$codiceFiscale);
+
+         
+    }
+    
+    function getDividendo(){
+        return $this->dividendo;
+    }
+    function setDividendo($dividendo){
+        $this->dividendo = $dividendo;
+    }
+    function getBonus(){
+        return $this->bonus;
+    }
+    function setBonus($bonus){
+        $this->bonus = $bonus;
+    }
+
+    function getRedditoAnnuale(){
+            return ($this->getDividendo() * 12) + $this->getBonus();
+    }
+
+    function getHtmlBoss(){
+        echo '<div>'.'<h4>Boss</h4>'. $this->getPersone().'<br>'.
+        'Reddito Annuale:€
+        '.$this->getRedditoAnnuale().'<br>'
+        .'</div>';
+    }
     
     
+}
+
+    $boss = new Capo('Darth', 'Sidius',' 18 / 24 / 89', 'Mordor', 'sfasgfvdafdsfvdafvsvffsfas', 600000, 38000);
+    $reddito = $stipendio;
+    echo $boss->getHtmlBoss();
 
     
 
